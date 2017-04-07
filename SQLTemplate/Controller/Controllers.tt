@@ -1,0 +1,102 @@
+﻿<#@ template debug="false" hostspecific="True" language="C#" #>
+ <#@ output extension=".cs" encoding="utf-8" #>
+ <#@ include file="SQLServer.ttinclude" #>
+ <#@ include file="MultipleOutputHelper.ttinclude"#> 
+  
+ <#
+     //获取所有表与视图
+     var tables = LoadTables();
+     //创建多文件生成实体
+     var manager = Manager.Create(Host, GenerationEnvironment);  
+  
+     //遍历所有表
+     foreach(var tbl in tables)
+	 {
+         //判断当前表名是否是禁用名称（禁用的名称可以在Settings.ttinclude文件的ExcludeTables字符串数据中进行添加）
+         if(!ExcludeTables.Contains(tbl.Name))
+         {
+			//实体名称
+			var entityName=tbl.CleanName.StartsWith("T_")?tbl.CleanName.Substring(2):tbl.CleanName;
+			// 设置输出的文件名
+			manager.StartNewFile(entityName+"Controller.cs");
+ #> 
+using System.Web.Mvc;
+using JJsites.BusinessLogicLayer;
+using JJsites.DataTransferObjects;
+using JJsites.DomainModels;
+using JJsoft.AspMvc;
+using JJsoft.DataTransferObject;
+using JJsoft.Extension;
+
+
+namespace JJsites.WebPc.Areas.AdminManager.Controllers
+{
+
+    public class <#=entityName#>Controller : AbstractBaseController
+    {
+
+        public <#=entityName#>Service <#=entityName#>Service { get; set; }
+
+        private readonly string _modelName = typeof(<#=entityName#>).GetDescription();
+
+        public ActionResult Index()
+        {
+            return View();
+        }
+
+
+        public JsonResult GetData(<#=entityName#>SearchDto dto)
+        {
+            dto.IsGettingTotalCount = true;
+
+            var rows = <#=entityName#>Service.Search(dto);
+            var result = new ResultInfo<<#=entityName#>>
+            {
+                IsSuccess = true,
+                Total = dto.TotalCount,
+                Data = rows
+            };
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+
+        public ActionResult Edit(long id = -1)
+        {
+            var data = <#=entityName#>Service.GetDataById(id);
+            return View(data);
+        }
+
+
+        public ActionResult Add()
+        {
+            return View("Edit");
+        }
+
+
+        public JsonResult Save(<#=entityName#>EditDto dto)
+        {
+            <#=entityName#>Service.Save(dto);
+            return Json(new BaseResponseDto {Message = "保存成功！", Success = true, Title = _modelName });
+        }
+
+
+        public JsonResult Remove(params long[] id)
+        {
+            <#=entityName#>Service.Remove(id);
+            return Json(new BaseResponseDto {Message = "删除成功！", Success = true, Title = _modelName });
+        }
+
+    }
+
+}
+
+<# 
+             // 输出文件结束 
+             manager.EndBlock();
+         } //if(!ExcludeTables.Contains(tbl.Name)) 判断结束
+        
+     }// end foreach
+ 
+     // 执行编译，生成文件
+     manager.Process(true);  
+#> 

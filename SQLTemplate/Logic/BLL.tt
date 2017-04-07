@@ -1,0 +1,124 @@
+﻿<#@ template debug="false" hostspecific="True" language="C#" #>
+ <#@ output extension=".cs" encoding="utf-8" #>
+ <#@ include file="SQLServer.ttinclude" #>
+ <#@ include file="MultipleOutputHelper.ttinclude"#> 
+  
+ <#
+     //获取所有表与视图
+     var tables = LoadTables();
+     //创建多文件生成实体
+     var manager = Manager.Create(Host, GenerationEnvironment);  
+  
+     //遍历所有表
+     foreach(var tbl in tables)
+	 {
+         //判断当前表名是否是禁用名称（禁用的名称可以在Settings.ttinclude文件的ExcludeTables字符串数据中进行添加）
+         if(!ExcludeTables.Contains(tbl.Name))
+         {
+			//实体名称
+			var entityName=tbl.CleanName.StartsWith("T_")?tbl.CleanName.Substring(2):tbl.CleanName;
+			// 设置输出的文件名
+			manager.StartNewFile(entityName+"Service.cs");
+ #> 
+using System.Collections.Generic;
+using System.Linq;
+using JJsites.DataTransferObjects;
+using JJsites.DomainModels;
+using JJsoft.DataAccessLayer;
+using JJsoft.DomainModel;
+using JJsoft.Exception; 
+using JJsoft.Extension;
+ 
+ namespace JJsites.BusinessLogicLayer
+ {
+<#
+#>
+	public class <#=entityName#>Service
+	{
+		public BaseDbContext BaseDao { get; set; }
+
+        public BasicDataService BasicDataService { get; set; }
+
+        private readonly string _modelName = typeof(<#=entityName#>).GetDescription();
+
+		public List<<#=entityName#>> Search(<#=entityName#>SearchDto dto)
+        {
+            var dataSource = BaseDao.Set<<#=entityName#>>().AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(dto.Keywords))
+                dataSource = dataSource.Where(m => (m.CustomedNumber != null && m.CustomedNumber.Contains(dto.Keywords)) || (m.Name != null && m.Name.Contains(dto.Keywords)));
+
+            //var isAsc = !string.IsNullOrWhiteSpace(dto.order) && dto.order == "asc";
+            //dataSource = !string.IsNullOrWhiteSpace(dto.sort) ? dataSource.OrderByKey(dto.sort, isAsc) : (isAsc ? dataSource.OrderBy(b => b.Id) : dataSource.OrderByDescending(b => b.Id));
+            dataSource = dataSource.OrderBy(a => a.CustomedNumber);
+
+            if (dto.IsGettingTotalCount)
+                dto.TotalCount = dataSource.Count();
+
+            return dataSource.SkipTake(dto.StartIndex, dto.TakeCount).ToList();
+        }
+
+
+        public void Save(<#=entityName#>EditDto dto)
+        {
+            if (string.IsNullOrWhiteSpace(dto.CustomedNumber))
+                throw ExceptionHelper.GenerateException("错误，{0}编号不能为空！", _modelName);
+
+            BasicDataService.CheckCustomedNumber<<#=entityName#>>(dto.CustomedNumber, dto.Id);
+
+            if (dto.Id > 0)
+            {
+                var data = BaseDao.Set<<#=entityName#>>().FirstOrDefault(b => b.Id == dto.Id);
+                if (data == null)
+                    throw ExceptionHelper.GenerateException("错误，{0}不存在！(Id:{1})", _modelName, dto.Id);
+
+                dto.CloneMembers(data);
+                BaseDao.Update(data);
+            }
+            else
+            {
+                var data = dto.CloneMembers<<#=entityName#>EditDto, <#=entityName#>>();
+                BaseDao.Add(data);
+            }
+            BaseDao.SaveChanges();
+        }
+
+
+        public void Remove(params long[] ids)
+        {
+            
+            if (ids == null || ids.Length == 0)
+                throw ExceptionHelper.GenerateException("错误，删除的序号为空！");
+            foreach (var id in ids)
+            {
+                var data = BaseDao.Set<<#=entityName#>>().FirstOrDefault(b => b.Id == id);
+                if (data == null)
+                    throw ExceptionHelper.GenerateException("错误，{0}不存在！(Id:{1})",_modelName, id);
+
+                if (BaseDao.Set<BudgetTarget>().Any(b => b.<#=entityName#> != null && b.<#=entityName#>.Id == id))
+                    throw ExceptionHelper.GenerateException("错误，预算指标包含了{0}的引用，删除失败！(Id:{1})",_modelName, id);
+
+                BaseDao.Remove(data);
+            }
+
+            BaseDao.SaveChanges();
+        }
+
+
+        public <#=entityName#> GetDataById(long id)
+        {
+            return BaseDao.Set<<#=entityName#>>().FirstOrDefault(b => b.Id == id);
+        }
+
+ 	}
+ }
+<# 
+             // 输出文件结束 
+             manager.EndBlock();
+         } //if(!ExcludeTables.Contains(tbl.Name)) 判断结束
+        
+     }// end foreach
+ 
+     // 执行编译，生成文件
+     manager.Process(true);  
+#> 

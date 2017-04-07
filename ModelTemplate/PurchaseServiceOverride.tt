@@ -1,0 +1,44 @@
+﻿<#@ template debug="false" hostspecific="true" language="C#" #>
+    <#@ assembly name="System.Core.dll" #>
+    <#@ assembly name="System.Xml" #>
+    <#@ import namespace="System" #>
+    <#@ import namespace="System.IO" #>
+    <#@ import namespace="System.Linq" #>
+	<#@ import namespace="System.Text.RegularExpressions" #>
+    <#@ output extension=".cs" #>
+//此为代码自动生成文件，不要手动修改
+//如有修改请改T4文件
+using DataAccess.Purchase;
+using DataAccessInterface;
+using Models.Purchase;   
+namespace Business.Purchase
+{
+	<# 
+	//当前解决方案路径
+	string solutionsPath = Host.ResolveAssemblyReference("$(SolutionDir)");  
+	string[]lines = File.ReadAllLines(this.Host.ResolvePath(solutionsPath+@"\DataAccess\Purchase\PurchaseDbContext.cs"));
+	foreach(string line in lines)
+	{
+		if(Regex.IsMatch(line,@"\s*DbSet<[A-z0-9_]*>"))
+		{#>
+			<#
+				var m=Regex.Match(line,@"(?<=DbSet<)[A-z0-9_]*(?=>\s*)");
+				if(m.Success)
+				{
+					string entity=m.Value;
+					#>
+	public partial class <#= entity#>Service:PurchaseBaseService<<#= entity#>>	
+    { 
+		public override void SetCurrentRepository()
+        {
+            CurrentRepository = PurchaseRepositoryFactory.<#= entity#>Repository;
+        }  
+    }
+
+					<#
+				}
+			#>
+		<#}
+	}
+	#>
+}

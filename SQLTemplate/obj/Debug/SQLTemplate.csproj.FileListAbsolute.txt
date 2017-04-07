@@ -1,0 +1,5 @@
+F:\我的工作区\我的程序\TTemplate\SQLTemplate\bin\Debug\SQLTemplate.dll.config
+F:\我的工作区\我的程序\TTemplate\SQLTemplate\bin\Debug\SQLTemplate.dll
+F:\我的工作区\我的程序\TTemplate\SQLTemplate\bin\Debug\SQLTemplate.pdb
+F:\我的工作区\我的程序\TTemplate\SQLTemplate\obj\Debug\SQLTemplate.dll
+F:\我的工作区\我的程序\TTemplate\SQLTemplate\obj\Debug\SQLTemplate.pdb

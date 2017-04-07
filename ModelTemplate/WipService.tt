@@ -1,0 +1,35 @@
+﻿<#@ include file="MultiOutput.tt" #>
+<#@ import namespace="System.Text.RegularExpressions" #>
+<#@ output extension=".cs" #>
+<# 
+DeleteOldOutputs();
+//实体名称集合
+List<string>lEntities=new List<string>();
+//当前解决方案路径
+string solutionsPath = Host.ResolveAssemblyReference("$(SolutionDir)");  
+string[]lines = File.ReadAllLines(this.Host.ResolvePath(solutionsPath+@"\DataAccess\Wip\WipDbContext.cs"));
+foreach(string line in lines)
+{
+	if(Regex.IsMatch(line,@"\s*DbSet<[A-z0-9_]*>"))
+	{
+		var m=Regex.Match(line,@"(?<=DbSet<)[A-z0-9_]*(?=>\s*)");
+		if(m.Success)
+		{
+			string entity=m.Value;
+			#>
+				using DataAccess.Wip; 
+				using DataAccessInterface;
+				using Models.Wip;   
+				namespace Business.Wip
+				{
+					public partial class <#= entity#>Service:WipBaseService<<#= entity#>>	
+					{ 
+						//添加操作方法
+					}
+				}
+				<# SaveOutput(entity+"Service.cs"); #>				
+			<#
+		}
+	}
+}
+#>

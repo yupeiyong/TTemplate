@@ -1,0 +1,46 @@
+﻿@using JJsites.DomainModels
+@using JJsites.WebPc.Model
+@model ##entityName##
+@{
+    ViewBag.Title = "Edit";
+
+    Layout = null;
+    var areaName = "";
+    var controllerName = "";
+    ViewInfo.GetInfo(ViewContext, out areaName, out controllerName);
+    var data = Model ?? new ##entityName##();
+}
+
+<div class="container-fluid">
+    <div class="row clearfix">
+        <div class="col-md-12">
+            <form class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">
+                        <span class="u-must-input">*</span>编号：
+                    </label>
+                    <div class="col-sm-10">
+                        <input name="CustomedNumber" type="text" class="form-control input-sm" value="@data.CustomedNumber"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">名称：</label>
+                    <div class="col-sm-10">
+                        <input name="Name" type="text" class="form-control input-sm" value="@data.Name"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="hidden">
+                        <input name="Id" type="hidden" value="@data.Id"/>
+                    </div>
+                    <div class="col-sm-12 text-center">
+                        <button type="button" class="btn btn-success u-btn" id="btnSave" data-url="/Admin/Manager/@controllerName/Save">
+                            <i class="fa fa-save" aria-hidden="true"></i>
+                            保存
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

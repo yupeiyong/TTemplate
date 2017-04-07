@@ -1,0 +1,59 @@
+﻿<#@ template debug="false" hostspecific="True" language="C#" #>
+<#@ import namespace="System.Text.RegularExpressions" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Reflection" #>
+<#@ output extension=".cs" encoding="utf-8" #>
+<#@ include file="SQLServer.ttinclude" #>
+<#@ include file="MultiOutput.tt" #>
+  
+ <#
+
+	//当前解决方案路径
+    string solutionsPath = Host.ResolveAssemblyReference("$(SolutionDir)");
+    //脚本运行路径
+    string currentFilePath = this.Host.ResolvePath(Host.TemplateFile);
+    if (currentFilePath.EndsWith(@"\"))
+    {
+        currentFilePath = currentFilePath.Substring(0, currentFilePath.Length - 1);
+    }
+    int index = currentFilePath.LastIndexOf(@"\");
+    currentFilePath = currentFilePath.Substring(0, index);
+
+
+     //获取所有表与视图
+     var tables = LoadTables();
+
+     //遍历所有表
+     foreach(var tbl in tables) 
+	 {
+         //判断当前表名是否是禁用名称（禁用的名称可以在Settings.ttinclude文件的ExcludeTables字符串数据中进行添加）
+         if(!ExcludeTables.Contains(tbl.Name))
+         {
+			//实体名称
+			var entityName=tbl.CleanName.StartsWith("T_")?tbl.CleanName.Substring(2):tbl.CleanName;
+			//按模型创建的文件夹名
+            string curDirectory = @currentFilePath + @"\" + entityName;
+            //创建文件夹
+            Directory.CreateDirectory(curDirectory);
+            //获取Index模板文件
+            string indexContent = File.ReadAllText(currentFilePath+@"\Index.txt");
+			var jsFileName=entityName.Substring(0,1).ToLower()+entityName.Substring(1);
+            indexContent = indexContent.Replace("##entityName##", entityName).Replace("##entityName_js##",jsFileName);
+ #> 
+<#= indexContent#>
+<# 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			SaveOutput(curDirectory+@"\Index.cshtml");
+			//获取Edit模板文件
+            string editContent = File.ReadAllText(currentFilePath+@"\Edit.txt");
+            editContent = editContent.Replace("##entityName##", entityName);
+#>
+<#= editContent#>
+<#
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			SaveOutput(curDirectory+@"\Edit.cshtml");
+         } //if(!ExcludeTables.Contains(tbl.Name)) 判断结束 
+        
+     }// end foreach
+ 
+#> 

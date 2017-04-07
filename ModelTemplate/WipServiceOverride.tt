@@ -1,0 +1,16 @@
+﻿<#@ template debug="false" hostspecific="true" language="C#" #>
+    <#@ assembly name="System.Core.dll" #>
+    <#@ assembly name="System.Xml" #>
+    <#@ import namespace="System" #>
+    <#@ import namespace="System.IO" #>
+    <#@ import namespace="System.Linq" #>
+	<#@ import namespace="System.Text.RegularExpressions" #>
+    <#@ output extension=".cs" #>
+//此为代码自动生成文件，不要手动修改
+//如有修改请改T4文件
+using DataAccess.Wip;
+using DataAccessInterface;
+using Models.Wip;   
+namespace Business.Wip
+{
+}

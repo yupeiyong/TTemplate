@@ -1,0 +1,222 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1FAFBD98-0539-423D-8DC7-5790F44B45D2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SQLTemplate</RootNamespace>
+    <AssemblyName>SQLTemplate</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Script\js.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>js.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SearchDto\SearchDto.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SearchDto.tt</DependentUpon>
+    </Compile>
+    <Compile Include="View\MultiOutput.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MultiOutput.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Controller\Controllers.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Controllers.cs</LastGenOutput>
+    </Content>
+    <Content Include="EditDto\EditDto.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>EditDto.cs</LastGenOutput>
+    </Content>
+    <Content Include="Script\accountingSubject-index.js">
+      <DependentUpon>js.tt</DependentUpon>
+    </Content>
+    <Content Include="Script\allUser-index.js">
+      <DependentUpon>js.tt</DependentUpon>
+    </Content>
+    <Content Include="Script\baseOnlineUser-index.js">
+      <DependentUpon>js.tt</DependentUpon>
+    </Content>
+    <Content Include="Script\baseUser-index.js">
+      <DependentUpon>js.tt</DependentUpon>
+    </Content>
+    <Content Include="Script\basicDataBaseModel-index.js">
+      <DependentUpon>js.tt</DependentUpon>
+    </Content>
+    <Content Include="Script\budgetTarget-index.js">
+      <DependentUpon>js.tt</DependentUpon>
+    </Content>
+    <Content Include="Script\budgetUnit-index.js">
+      <DependentUpon>js.tt</DependentUpon>
+    </Content>
+    <Content Include="Script\budgetUnitSubjectReport-index.js">
+      <DependentUpon>js.tt</DependentUpon>
+    </Content>
+    <Content Include="Script\budgetUnitSubjectReportItem-index.js">
+      <DependentUpon>js.tt</DependentUpon>
+    </Content>
+    <Content Include="Script\department-index.js">
+      <DependentUpon>js.tt</DependentUpon>
+    </Content>
+    <Content Include="Script\documentNumber-index.js">
+      <DependentUpon>js.tt</DependentUpon>
+    </Content>
+    <Content Include="Script\economicsCategory-index.js">
+      <DependentUpon>js.tt</DependentUpon>
+    </Content>
+    <Content Include="Script\economicsSubject-index.js">
+      <DependentUpon>js.tt</DependentUpon>
+    </Content>
+    <Content Include="Script\executionMode-index.js">
+      <DependentUpon>js.tt</DependentUpon>
+    </Content>
+    <Content Include="Script\filePoolItemInfo-index.js">
+      <DependentUpon>js.tt</DependentUpon>
+    </Content>
+    <Content Include="Script\functionCategory-index.js">
+      <DependentUpon>js.tt</DependentUpon>
+    </Content>
+    <Content Include="Script\functionSubject-index.js">
+      <DependentUpon>js.tt</DependentUpon>
+    </Content>
+    <Content Include="Script\importFileLog-index.js">
+      <DependentUpon>js.tt</DependentUpon>
+    </Content>
+    <Content Include="Script\infrastructureSymbol-index.js">
+      <DependentUpon>js.tt</DependentUpon>
+    </Content>
+    <Content Include="Script\js.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>js.cs</LastGenOutput>
+    </Content>
+    <Content Include="Script\managementDocumentNumber-index.js">
+      <DependentUpon>js.tt</DependentUpon>
+    </Content>
+    <Content Include="Script\moneyCategory-index.js">
+      <DependentUpon>js.tt</DependentUpon>
+    </Content>
+    <Content Include="Script\moneyNature-index.js">
+      <DependentUpon>js.tt</DependentUpon>
+    </Content>
+    <Content Include="Script\permissionRule-index.js">
+      <DependentUpon>js.tt</DependentUpon>
+    </Content>
+    <Content Include="Script\project-index.js">
+      <DependentUpon>js.tt</DependentUpon>
+    </Content>
+    <Content Include="Script\projectCategory-index.js">
+      <DependentUpon>js.tt</DependentUpon>
+    </Content>
+    <Content Include="Script\purchaseSymbol-index.js">
+      <DependentUpon>js.tt</DependentUpon>
+    </Content>
+    <Content Include="Script\revenueAndExpenditureManagementStructure-index.js">
+      <DependentUpon>js.tt</DependentUpon>
+    </Content>
+    <Content Include="Script\seoSetting-index.js">
+      <DependentUpon>js.tt</DependentUpon>
+    </Content>
+    <Content Include="Script\signAndIssueLeader-index.js">
+      <DependentUpon>js.tt</DependentUpon>
+    </Content>
+    <Content Include="Script\sitemapItem-index.js">
+      <DependentUpon>js.tt</DependentUpon>
+    </Content>
+    <Content Include="Script\targetManageDepartment-index.js">
+      <DependentUpon>js.tt</DependentUpon>
+    </Content>
+    <Content Include="Script\targetSource-index.js">
+      <DependentUpon>js.tt</DependentUpon>
+    </Content>
+    <Content Include="Script\taxAndSpendSymbol-index.js">
+      <DependentUpon>js.tt</DependentUpon>
+    </Content>
+    <Content Include="Script\transferSymbol-index.js">
+      <DependentUpon>js.tt</DependentUpon>
+    </Content>
+    <Content Include="Script\__MigrationHistory-index.js">
+      <DependentUpon>js.tt</DependentUpon>
+    </Content>
+    <Content Include="SearchDto\SearchDto.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>SearchDto.cs</LastGenOutput>
+    </Content>
+    <Content Include="Logic\BLL.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>BLL.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\Model.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Model.cs</LastGenOutput>
+    </Content>
+    <Content Include="View\View.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>View.cs</LastGenOutput>
+    </Content>
+    <Content Include="View\MultiOutput.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>MultiOutput.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <Content Include="View\Edit.txt" />
+    <Content Include="View\Index.txt" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{bdd1bfd7-796f-470b-81b4-f7a6cff0f15b}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
