@@ -10,7 +10,7 @@
      var manager = Manager.Create(Host, GenerationEnvironment);  
   
      //遍历所有表
-     foreach(var tbl in tables)
+     foreach(var tbl in tables) 
 	 {
          //判断当前表名是否是禁用名称（禁用的名称可以在Settings.ttinclude文件的ExcludeTables字符串数据中进行添加）
          if(!ExcludeTables.Contains(tbl.Name))

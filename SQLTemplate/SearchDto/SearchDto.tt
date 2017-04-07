@@ -18,21 +18,14 @@
 			//实体名称
 			var entityName=tbl.CleanName.StartsWith("T_")?tbl.CleanName.Substring(2):tbl.CleanName;
 			// 设置输出的文件名
-			manager.StartNewFile(entityName+"EditDto.cs");
- #>
-using JJsoft.DataTransferObject;
+			manager.StartNewFile(entityName+"SearchDto.cs");
+ #> 
 
-namespace JJsites.DataTransferObjects
+ namespace JJsites.DataTransferObjects
 {
 
-    public class <#=entityName#>EditDto : BaseRequestDto
+    public class <#=entityName#>SearchDto : SearchByParametersDto
     {
-
-        public long Id { get; set; }
-
-        public string CustomedNumber { get; set; }
-
-        public string Name { get; set; }
 
     }
 

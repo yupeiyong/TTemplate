@@ -46,11 +46,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>js.tt</DependentUpon>
     </Compile>
-    <Compile Include="SearchDto\SearchDto.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SearchDto.tt</DependentUpon>
-    </Compile>
     <Compile Include="View\MultiOutput.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -62,9 +57,9 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Controllers.cs</LastGenOutput>
     </Content>
-    <Content Include="EditDto\EditDto.tt">
+    <Content Include="SearchDto\SearchDto.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>EditDto.cs</LastGenOutput>
+      <LastGenOutput>SearchDto.cs</LastGenOutput>
     </Content>
     <Content Include="Script\accountingSubject-index.js">
       <DependentUpon>js.tt</DependentUpon>
@@ -175,9 +170,9 @@
     <Content Include="Script\__MigrationHistory-index.js">
       <DependentUpon>js.tt</DependentUpon>
     </Content>
-    <Content Include="SearchDto\SearchDto.tt">
+    <Content Include="EditDto\EditDto.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>SearchDto.cs</LastGenOutput>
+      <LastGenOutput>EditDto.cs</LastGenOutput>
     </Content>
     <Content Include="Logic\BLL.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -204,7 +199,9 @@
     <Content Include="View\Edit.txt" />
     <Content Include="View\Index.txt" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <TypeScriptCompile Include="file1.ts" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{bdd1bfd7-796f-470b-81b4-f7a6cff0f15b}</Project>
